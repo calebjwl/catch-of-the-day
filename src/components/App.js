@@ -11,6 +11,7 @@ class App extends React.Component {
 
     this.addFish = this.addFish.bind(this);
     this.loadSamples = this.loadSamples.bind(this);
+    this.addToOrder = this.addToOrder.bind(this);
     // getInitialState
     this.state = {
       fishes: {},
@@ -19,19 +20,28 @@ class App extends React.Component {
   }
 
   addFish(fish) {
-    // update our state
+    // copy of our state
     const fishes = {...this.state.fishes};
     // add our new fish
     const timestamp = Date.now();
     fishes[`fish-${timestamp}`] = fish;
     // set state
-    this.setState({ fishes: fishes });
+    // same thing as this.setState({ fishes: fishes });
+    this.setState({ fishes });
   }
 
   loadSamples() {
     this.setState({
       fishes: sampleFishes
     });
+  }
+
+  addToOrder(key) {
+    const order = {...this.state.order};
+    // update or add the new number of fish ordered
+    // order.fish1 etc...
+    order[key] = order[key] + 1 || 1;
+    this.setState({ order });
   }
 
   render() {
@@ -44,7 +54,7 @@ class App extends React.Component {
               Object
               // returns ["fish1", "fish2", etc...]
                 .keys(this.state.fishes)
-                .map(key => <Fish key={key} details={this.state.fishes[key]} />)
+                .map(key => <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder}/>)
             }
           </ul>
         </div>
