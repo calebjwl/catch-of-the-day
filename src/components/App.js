@@ -44,9 +44,8 @@ class App extends React.Component {
               Object
               // returns ["fish1", "fish2", etc...]
                 .keys(this.state.fishes)
-                .map(key => <Fish key={key} details={this.state.fishes[key]}/>)
+                .map(key => <Fish key={key} details={this.state.fishes[key]} />)
             }
-            <Fish/>
           </ul>
         </div>
         <Order/>
