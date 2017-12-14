@@ -61,9 +61,10 @@ class App extends React.Component {
   }
 
   updateFish(key, updatedFish) {
+    // copy existing state
     const fishes = {...this.state.fishes};
     fishes[key] = updatedFish;
-    this.setState({ fishes })
+    this.setState({ fishes });
   }
 
   loadSamples() {
