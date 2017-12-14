@@ -28,8 +28,10 @@ class App extends React.Component {
       context: this,
       state: 'fishes'
     });
+
     // check if there is any order in localStorage
     const localStorageRef = localStorage.getItem(`order-${this.props.params.storeId}`);
+
     if(localStorageRef) {
       // update App component's order state
       this.setState({
@@ -90,7 +92,7 @@ class App extends React.Component {
           order={this.state.order}
           params={this.props.params}
           />
-        <Inventory addFish={this.addFish} loadSamples={this.loadSamples}/>
+        <Inventory addFish={this.addFish} loadSamples={this.loadSamples} fishes ={this.state.fishes}/>
       </div>
     )
   }
