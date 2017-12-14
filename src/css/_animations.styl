@@ -26,3 +26,22 @@
     padding: 0 !important;
   }
 }
+
+.count-enter {
+  transition: all 250ms;
+  transform: translateY(100%); // start off screen, slowly move up
+  &-active {
+    transform: translateY(0); // leave at resting spot
+  }
+}
+
+.count-leave {
+  transition: all 250ms;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform: translateY(0);
+  &-active {
+    transform: translateY(-100%);
+  }
+}
