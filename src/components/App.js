@@ -118,7 +118,7 @@ class App extends React.Component {
         <Inventory
           addFish={this.addFish}
           loadSamples={this.loadSamples}
-          fishes ={this.state.fishes}
+          fishes={this.state.fishes}
           updateFish={this.updateFish}
           removeFish={this.removeFish}
           />
@@ -126,5 +126,9 @@ class App extends React.Component {
     )
   }
 }
+
+App.propTypes = {
+  params: React.PropTypes.object.isRequired
+};
 
 export default App;
