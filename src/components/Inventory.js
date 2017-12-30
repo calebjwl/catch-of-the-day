@@ -1,13 +1,15 @@
 import React from 'react';
 import AddFishForm from './AddFishForm';
-import base from '../base';
+import firebase from '../base';
 
 class Inventory extends React.Component {
   constructor() {
     super();
     this.renderInventory = this.renderInventory.bind(this);
     this.renderLogin = this.renderLogin.bind(this);
-    this.authenticate = this.authenticate.bind(this);
+    this.authenticateGithub = this.authenticateGithub.bind(this);
+    this.authenticateFacebook = this.authenticateFacebook.bind(this);
+    this.authenticateTwitter = this.authenticateTwitter.bind(this);
     this.authHandler = this.authHandler.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
@@ -26,8 +28,19 @@ class Inventory extends React.Component {
     this.props.updateFish(key, updatedFish)
   }
 
-  authenticate(provider) {
-    base.AuthWithOAuthPopup(provider, this.authHandler);
+  authenticateGithub() {
+    var provider = new firebase.auth.GithubAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(this.authHandler);
+  }
+
+  authenticateFacebook() {
+    var provider = new firebase.auth.FacebookAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(this.authHandler);
+  }
+
+  authenticateTwitter() {
+    var provider = new firebase.auth.TwitterAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(this.authHandler);
   }
 
   authHandler(err, authData) {
@@ -43,11 +56,11 @@ class Inventory extends React.Component {
       <nav className="login">
         <h2>Inventory</h2>
         <p>Sign in to manage your store's inventory</p>
-        <button className="github" onClick={() => this.authenticate('github')}>
+        <button className="github" onClick={() => this.authenticateGithub()}>
           Log In with Github</button>
-        <button className="facebook" onClick={() => this.authenticate('facebook')}>
+        <button className="facebook" onClick={() => this.authenticateFacebook()}>
           Log In with Facebook</button>
-        <button className="twitter" onClick={() => this.authenticate('twitter')}>
+        <button className="twitter" onClick={() => this.authenticateTwitter()}>
           Log In with Twitter</button>
       </nav>
     )
