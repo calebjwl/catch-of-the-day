@@ -1,6 +1,6 @@
 import React from 'react';
 import AddFishForm from './AddFishForm';
-import firebase from '../base';
+import base from '../base';
 
 class Inventory extends React.Component {
   constructor() {
@@ -29,26 +29,43 @@ class Inventory extends React.Component {
   }
 
   authenticateGithub() {
-    var provider = new firebase.auth.GithubAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(this.authHandler);
+    var provider = new base.auth.GithubAuthProvider();
+    base.auth().signInWithPopup(provider).then(this.authHandler);
   }
 
   authenticateFacebook() {
-    var provider = new firebase.auth.FacebookAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(this.authHandler);
+    var provider = new base.auth.FacebookAuthProvider();
+    base.auth().signInWithPopup(provider).then(this.authHandler);
   }
 
   authenticateTwitter() {
-    var provider = new firebase.auth.TwitterAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(this.authHandler);
+    var provider = new base.auth.TwitterAuthProvider();
+    base.auth().signInWithPopup(provider).then(this.authHandler).catch(function(error) {
+      console.log(error);
+    });
   }
 
-  authHandler(err, authData) {
+  authHandler(authData) {
     console.log(authData);
-    // if(err) {
-    //   console.error(err);
-    //   return;
-    // }
+
+    // grab store info
+    const storeRef = base.database().ref(this.props.storeId);
+
+    // query the firebase once from the store data
+    storeRef.once('value', (snapshot) => {
+      const data = snapshot.val() || {};
+      // claim as our own if no previous owner
+      if(!data.owner) {
+        storeRef.set({
+          owner: authData.user.uid
+        });
+      }
+
+      this.setState({
+        uid: authData.user.uid,
+        owner: data.owner || authData.user.uid
+      });
+    });
   }
 
   renderLogin() {
@@ -124,6 +141,7 @@ Inventory.propTypes = {
   removeFish: React.PropTypes.func.isRequired,
   addFish: React.PropTypes.func.isRequired,
   loadSamples: React.PropTypes.func.isRequired,
+  storeId: React.PropTypes.string.isRequired,
 };
 
 export default Inventory;
